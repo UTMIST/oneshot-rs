@@ -1,9 +1,13 @@
 [package]
-name = "oneshot-rs"
+name = "one-shot"
 version = "0.1.0"
 authors = ["leglesslamb <wu.rupert@outlook.com>"]
 edition = "2018"
-
+description = "A Rust implementation of Siamese Neural Networks for One-shot Image Recognition for benchmarking performance and results."
+repository = "https://github.com/UTMIST/oneshot-rs"
+readme = "README.md"
+categories = ["science"]
+license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [patch.crates-io]
