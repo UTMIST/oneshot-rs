@@ -30,11 +30,32 @@ pub fn random_sample(
 }
 
 pub fn random_sample_negative_diff_scripts(
-    _data_path: &str,
-    _script1: &str,
-    _script2: &str,
+    data_path: &str,
+    script1: &str,
+    script2: &str,
 ) -> io::Result<Vec<PathBuf>> {
-    unimplemented!();
+    let mut samples: Vec<PathBuf> = Vec::new();
+    for script in vec![script1, script2] {
+        let character = fs::read_dir(format!("{}/{}", data_path, script))?
+            .map(|res| res.map(|e| e.file_name()))
+            .collect::<Result<Vec<_>, io::Error>>()?
+            .choose(&mut rand::thread_rng())
+            .cloned();
+
+        if let Some(c_os_str) = character {
+            if let Some(c_str) = c_os_str.to_str() {
+                if let Some(s) = fs::read_dir(format!("{}/{}/{}", data_path, script, c_str))?
+                    .map(|res| res.map(|e| e.path()))
+                    .collect::<Result<Vec<_>, io::Error>>()?
+                    .choose(&mut rand::thread_rng())
+                    .cloned()
+                {
+                    samples.push(s);
+                }
+            }
+        }
+    }
+    Ok(samples)
 }
 
 pub fn random_sample_negative_same_script(
