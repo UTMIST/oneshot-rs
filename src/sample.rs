@@ -1,32 +1,23 @@
 use rand::seq::SliceRandom;
 use std::path::PathBuf;
-use std::{ffi, fs, io, process, vec::Vec};
+use std::{ffi, fs, io, vec::Vec};
 
 pub fn random_sample(
     data_path: &str,
     positive: bool,
     script1: &str,
     script2: &str,
-) -> io::Result<()> {
-    let samples = if positive {
-        match random_sample_positive(data_path, script1) {
-            Ok(rc) => rc,
-            Err(_) => process::exit(0),
-        }
-    } else if script2.len() > 0 {
-        match random_sample_negative_diff_scripts(data_path, script1, script2) {
-            Ok(rc) => rc,
-            Err(_) => process::exit(0),
-        }
-    } else {
-        match random_sample_negative_same_script(data_path, script1) {
-            Ok(rc) => rc,
-            Err(_) => process::exit(0),
-        }
+) -> io::Result<Vec<PathBuf>> {
+    let samples = match (positive, script2.len()) {
+        (true, _) => random_sample_positive(data_path, script1),
+        (_, 0) => random_sample_negative_same_script(data_path, script1),
+        _ => random_sample_negative_diff_scripts(data_path, script1, script2),
     };
 
-    println!("{:?}", samples);
-    Ok(())
+    Ok(match samples {
+        Ok(s) => s,
+        Err(_) => Vec::new(),
+    })
 }
 
 pub fn random_sample_negative_diff_scripts(

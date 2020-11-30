@@ -1,18 +1,21 @@
-use oneshot;
-use std::{env, io};
+use oneshot::sample;
+use std::{env, process};
 
-fn main() -> io::Result<()> {
+fn main() {
     let args: Vec<String> = env::args().collect();
-    match args.len() {
-        4..=5 => oneshot::sample::random_sample(
-            &args[1],
-            args[2].as_str() == "1",
-            &args[3],
-            match args.len() {
-                5 => &args[4],
-                _ => "",
-            },
-        ),
-        _ => Ok(()),
+    if args.len() < 4 {
+        process::exit(1);
     }
+
+    let (directory, positive, script1) = (&args[1], args[2].as_str() == "1", &args[3]);
+    let script2 = match args.len() {
+        5 => &args[4],
+        _ => "",
+    };
+    let samples = match sample::random_sample(directory, positive, script1, script2) {
+        Ok(s) => s,
+        Err(_) => Vec::new(),
+    };
+
+    println!("{:?}", samples);
 }
