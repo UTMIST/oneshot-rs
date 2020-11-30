@@ -1,0 +1,3 @@
+[submodule "oneshot-data"]
+	path = oneshot-data
+	url = git@github.com:UTMIST/oneshot-data.git
