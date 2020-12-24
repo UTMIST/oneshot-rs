@@ -1,4 +1,4 @@
-use oneshot::sample;
+use oneshot::{network, sample};
 use std::{env, process};
 
 fn main() {
@@ -18,4 +18,8 @@ fn main() {
     };
 
     println!("{:?}", samples);
+    match (samples.first(), samples.last()) {
+        (Some(s1), Some(s2)) => network::train((s1, s2)),
+        _ => println!("{:?}", samples),
+    }
 }
