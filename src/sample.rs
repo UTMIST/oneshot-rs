@@ -2,6 +2,7 @@ use rand::seq::SliceRandom;
 use std::path::PathBuf;
 use std::{ffi, fs, io, vec::Vec};
 
+/// Two random samples drawn from the functions given arguments.
 pub fn random_sample(
     data_path: &str,
     positive: bool,
@@ -20,6 +21,7 @@ pub fn random_sample(
     })
 }
 
+/// Two random samples from different characters from different scripts.
 pub fn random_sample_negative_diff_scripts(
     data_path: &str,
     script1: &str,
@@ -39,9 +41,8 @@ pub fn random_sample_negative_diff_scripts(
                     .map(|res| res.map(|e| e.path()))
                     .collect::<Result<Vec<_>, io::Error>>()?
                     .choose(&mut rand::thread_rng())
-                    .cloned()
                 {
-                    samples.push(s);
+                    samples.push(s.to_path_buf())
                 }
             }
         }
@@ -49,6 +50,7 @@ pub fn random_sample_negative_diff_scripts(
     Ok(samples)
 }
 
+/// Two random samples from different characters from the same script.
 pub fn random_sample_negative_same_script(
     data_path: &str,
     script: &str,
@@ -67,9 +69,8 @@ pub fn random_sample_negative_same_script(
                 .map(|res| res.map(|e| e.path()))
                 .collect::<Result<Vec<_>, io::Error>>()?
                 .choose(&mut rand::thread_rng())
-                .cloned()
             {
-                samples.push(s)
+                samples.push(s.to_path_buf())
             }
         };
     }
@@ -77,6 +78,7 @@ pub fn random_sample_negative_same_script(
     Ok(samples)
 }
 
+/// Two random samples from the same character from the same script.
 pub fn random_sample_positive(data_path: &str, script: &str) -> io::Result<Vec<PathBuf>> {
     let character = fs::read_dir(format!("{}/{}", data_path, script))?
         .map(|res| res.map(|e| e.file_name()))
@@ -87,14 +89,13 @@ pub fn random_sample_positive(data_path: &str, script: &str) -> io::Result<Vec<P
     let mut samples: Vec<PathBuf> = Vec::new();
     if let Some(c_os_str) = character {
         if let Some(c_str) = c_os_str.to_str() {
-            samples.push(
-                fs::read_dir(format!("{}/{}/{}", data_path, script, c_str))?
-                    .map(|res| res.map(|e| e.path()))
-                    .collect::<Result<Vec<_>, io::Error>>()?
-                    .choose_multiple(&mut rand::thread_rng(), 2)
-                    .cloned()
-                    .collect(),
-            )
+            for path in fs::read_dir(format!("{}/{}/{}", data_path, script, c_str))?
+                .map(|res| res.map(|e| e.path()))
+                .collect::<Result<Vec<_>, io::Error>>()?
+                .choose_multiple(&mut rand::thread_rng(), 2)
+            {
+                samples.push(path.to_path_buf());
+            }
         }
     };
 
