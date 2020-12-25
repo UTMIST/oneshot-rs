@@ -28,10 +28,10 @@ unzip oneshot-data/data_augmented/<dataset>.zip
 
 ### Random Sampling
 
-From the `<dataset>`, choose a `<script1>` and `<script2>` and use `0` for negative and `1` for positive.
+To select `<num-pairs>` pairs of images from <dataset-directory> for a (training/testing) set, run the following script.
 
 ```sh
-cargo run -- <dataset> <positive> <script1> [<script2>]
+cargo run -- <dataset-directory> <num-pairs>
 ```
 
 ## Repositories & Resources
