@@ -7,12 +7,12 @@ use std::path::PathBuf;
 use std::vec::Vec;
 
 /// Generate <num_pairs> pairs of character images.
-pub fn random_pairs(dataset: &str, num_pairs: usize) -> Result<Vec<Vec<PathBuf>>> {
+pub fn random_pairs(dataset: &str, num_pairs: usize) -> Result<Vec<(PathBuf, PathBuf)>> {
     let scripts = fs::read_dir(dataset)?
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>>>()?;
 
-    let mut pairs: Vec<Vec<PathBuf>> = Vec::new();
+    let mut pairs: Vec<(PathBuf, PathBuf)> = Vec::new();
     macro_rules! sample {
         ( $func:expr $( , $more:expr )* ) => (
             if let Ok(ps) = $func($( $more ),*) {
