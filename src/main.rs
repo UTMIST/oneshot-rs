@@ -1,3 +1,4 @@
+use oneshot::data;
 use oneshot::sample;
 use std::{env, process};
 
@@ -13,7 +14,5 @@ fn main() {
         Ok(ps) => ps,
     };
 
-    for p in pairs {
-        println!("{:?}", p);
-    }
+    let (_train_x1, _train_x2, _train_y) = data::load_pair_set(pairs);
 }

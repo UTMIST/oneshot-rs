@@ -16,23 +16,30 @@ git submodule update --init
 
 - [UTMIST/oneshot-data: Augmented Omniglot data set for one-shot learning](https://github.com/utmist/oneshot-data).
 
-## Usage
-
 ### Unpacking Dataset
 
-Review the contents of `oneshot-data/data_augmented` and choose a `<dataset>`.
+Review the contents of `oneshot-data/data_augmented` and choose a `<background-dataset>` from the `*background*` datasets.
 
 ```sh
-unzip oneshot-data/data_augmented/<dataset>.zip
+unzip oneshot-data/data_augmented/<background-dataset>.zip
 ```
 
-### Random Sampling
+## Running the Code
 
-To select `<num-pairs>` pairs of images from <dataset-directory> for a (training/testing) set, run the following script.
+To select `<num-background-pairs>` pairs of images from `<background-dataset>` for a background set, run the following script.
 
 ```sh
 cargo run -- <dataset-directory> <num-pairs>
 ```
+
+### Library Modules
+
+- `sampling`: Sample `<num-background-pairs>` image pairs in a 50%/50% positive/negative split.
+  - Negative pairs using the same script strictly avoid using the same character.
+  - Pairs are represented by filenames relative to the repository root.
+- `data`: Given an image pair set, load the pairs into two parallel arrays of images (each image is an 105x105 matrix of `bool` values) along another parallel array of labels (`bool` values for positive/negative).
+  - `bool` values were chosen because images in the Omniglot dataset are bilevel (black/white) and therefore each pixel can be represented by just one bit.
+- `network`: (Work in Progress)
 
 ## Repositories & Resources
 
