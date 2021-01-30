@@ -1,4 +1,5 @@
 use oneshot::data;
+use oneshot::network;
 use oneshot::sample;
 use std::{env, process};
 
@@ -14,5 +15,8 @@ fn main() {
         Ok(ps) => ps,
     };
 
-    let (_train_x1, _train_x2, _train_y) = data::load_pair_set(pairs);
+    let (train_x1, train_x2, train_y) = data::load_pair_set(pairs);
+
+    // println!("{:?}", _train_x1.shape())
+    network::train(train_x1, train_x2, train_y)
 }

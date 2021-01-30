@@ -3,16 +3,15 @@ extern crate ndarray;
 
 mod layers;
 
+use super::data::NDArr;
 use ag::{ndarray_ext as array, optimizers::adam, tensor::Variable};
-use ndarray_image::open_gray_image;
-use std::path::PathBuf;
+use ndarray::s;
 
 type Tensor<'graph> = ag::Tensor<'graph, f32>;
 
-pub fn train(samples: (&PathBuf, &PathBuf)) {
-    let mut _image1 = open_gray_image(samples.0).expect("unable to open input image");
-    let mut _image2 = open_gray_image(samples.1).expect("unable to open input image");
+pub fn train(train_x1: NDArr, train_x2: NDArr, train_y: NDArr) {
 
+    
     ag::with(|g| {
         let rng = array::ArrayRng::<f32>::default();
         macro_rules! rand_normal {
@@ -58,11 +57,28 @@ pub fn train(samples: (&PathBuf, &PathBuf)) {
 
         // Siamese Distance
         let pre_weighted_l1_dist = g.abs(sig_2 - sig_1);
-        let weighted_l1_dist = g.matmul(w6, pre_weighted_l1_dist);
+        let weighted_l1_dist = g.matmul(params[5], pre_weighted_l1_dist);
         let final_prediction = weighted_l1_dist;
         let loss = g.sigmoid_cross_entropy(final_prediction, y);
         let grads = &g.grad(&[&loss], params);
         let _update_ops: &[Tensor] =
             &adam::Adam::default().compute_updates(params, grads, &adam_state, g);
+
+        // println!("{:?}", );
+        for epoch in 0..1 {
+            let x1_batch = train_x1.slice(s![0..500, .., .., ..]).into_dyn();
+            let x2_batch = train_x2.slice(s![0..500, .., .., ..]).into_dyn();
+            let y_batch = train_y.slice(s![0..500, ..]).into_dyn();
+
+            println!("{:?}", x1_batch.shape());
+            println!("{:?}", x2_batch.shape());
+            println!("{:?}", y_batch.shape());
+
+            g.eval(
+                _update_ops,
+                &[x1.given(x1_batch), x2.given(x2_batch), y.given(y_batch)],
+            );
+            println!("finish epoch {}", epoch);
+        }
     })
 }

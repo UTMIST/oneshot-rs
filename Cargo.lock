@@ -487,7 +487,7 @@ version = "0.1.0"
 dependencies = [
  "autograd",
  "image",
- "ndarray 0.13.1",
+ "ndarray 0.12.1",
  "ndarray-image",
  "rand 0.7.3",
  "structopt",
