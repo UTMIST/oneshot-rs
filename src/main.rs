@@ -17,6 +17,5 @@ fn main() {
 
     let (train_x1, train_x2, train_y) = data::load_pair_set(pairs);
 
-    // println!("{:?}", _train_x1.shape())
     network::train(train_x1, train_x2, train_y)
 }

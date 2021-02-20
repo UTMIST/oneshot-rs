@@ -10,8 +10,6 @@ use ndarray::s;
 type Tensor<'graph> = ag::Tensor<'graph, f32>;
 
 pub fn train(train_x1: NDArr, train_x2: NDArr, train_y: NDArr) {
-
-    
     ag::with(|g| {
         let rng = array::ArrayRng::<f32>::default();
         macro_rules! rand_normal {
@@ -64,7 +62,6 @@ pub fn train(train_x1: NDArr, train_x2: NDArr, train_y: NDArr) {
         let _update_ops: &[Tensor] =
             &adam::Adam::default().compute_updates(params, grads, &adam_state, g);
 
-        // println!("{:?}", );
         for epoch in 0..1 {
             let x1_batch = train_x1.slice(s![0..500, .., .., ..]).into_dyn();
             let x2_batch = train_x2.slice(s![0..500, .., .., ..]).into_dyn();

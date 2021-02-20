@@ -8,13 +8,15 @@ Python is a very flexible scripting language, suitable for machine learning expe
 
 ## Setup
 
+You can expedite the setup and run the basic test cases using `cargo test`.
+
+### Submodules
+
+- [UTMIST/oneshot-data: Augmented Omniglot data set for one-shot learning](https://github.com/utmist/oneshot-data).
+
 ```sh
 git submodule update --init
 ```
-
-#### Submodules
-
-- [UTMIST/oneshot-data: Augmented Omniglot data set for one-shot learning](https://github.com/utmist/oneshot-data).
 
 ### Unpacking Dataset
 
@@ -24,7 +26,7 @@ Review the contents of `oneshot-data/data_augmented` and choose a `<background-d
 unzip oneshot-data/data_augmented/<background-dataset>.zip
 ```
 
-## Running the Code
+### Running the Code
 
 To select `<num-background-pairs>` pairs of images from `<background-dataset>` for a background set, run the following script.
 
@@ -32,7 +34,7 @@ To select `<num-background-pairs>` pairs of images from `<background-dataset>` f
 cargo run -- <dataset-directory> <num-pairs>
 ```
 
-### Library Modules
+## Library Modules
 
 - `sampling`: Sample `<num-background-pairs>` image pairs in a 50%/50% positive/negative split.
   - Negative pairs using the same script strictly avoid using the same character.
