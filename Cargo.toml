@@ -13,6 +13,20 @@ license = "MIT"
 [patch.crates-io]
 ndarray-image = { git = 'https://github.com/rust-cv/ndarray-image' }
 
+[dependencies]
+autograd = { version = "1.0.3", features = ["mkl"] }
+image = "0.23.2"
+intel-mkl-src = { version="0.2.5", optional = true, default-features = true }
+ndarray-image = "0.2.1"
+ndarray = { version = "0.12.1", default-features = false }
+rand = "0.7.3"
+structopt = "0.3.12"
+walkdir = "2.3.1"
+
+[features]
+mkl = ["intel-mkl-src"]
+
+
 [lib]
 name = "oneshot"
 path = "src/lib.rs"
@@ -20,14 +34,3 @@ path = "src/lib.rs"
 [[bin]]
 name = "oneshot"
 path = "src/main.rs"
-
-[dependencies]
-autograd = { version = "1.0.3", features = ["mkl"] }
-image = "0.23.2"
-ndarray-image = "0.2.1"
-ndarray = { version = "0.12.1", default-features = false }
-rand = "0.7.3"
-structopt = "0.3.12"
-walkdir = "2.3.1"
-
-
