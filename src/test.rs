@@ -19,7 +19,7 @@ fn omniglot_images_background_10_pairs_test() {
             .output()
             .expect("Failed to unzip data zip.");
     }
-    let num_pairs: usize = 10;
+    let num_pairs: usize = 76;
     let directory: &str = "data_augmented/images_background_augmented";
     let pairs = match sample::random_pairs(directory, num_pairs) {
         Err(e) => panic!(e),
@@ -29,5 +29,5 @@ fn omniglot_images_background_10_pairs_test() {
     let (train_x1, train_x2, train_y) = data::load_pair_set(pairs);
 
     println!("{:?}", train_x1.shape());
-    network::train(train_x1, train_x2, train_y)
+    network::train(train_x1, train_x2, train_y, 25, 2)
 }

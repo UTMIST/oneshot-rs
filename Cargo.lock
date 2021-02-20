@@ -487,6 +487,7 @@ version = "0.1.0"
 dependencies = [
  "autograd",
  "image",
+ "intel-mkl-src",
  "ndarray 0.12.1",
  "ndarray-image",
  "rand 0.7.3",
