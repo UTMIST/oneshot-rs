@@ -1,0 +1,52 @@
+NOTE: Channels are last in the shape ordering
+
+Input: (105, 105, 1) 
+
+conv + relu: 
+	- Output shape: (96, 96, 64)
+	- W: (10, 10, 64)
+	- b: (96, 96, 64)
+
+maxpooling2D:
+	- Output shape: (48, 48, 64)
+	- Size: (2, 2)
+
+conv + relu: 
+	- Output shape: (42, 42, 128)
+	- W: (7, 7, 128)
+	- b: (42, 42, 128)
+
+maxpooling2D:
+	- Output shape: (21, 21, 128)
+	- Size: (2, 2)
+
+conv + relu: 
+	- Output shape: (18, 18, 128)
+	- W: (4, 4, 128)
+	- b: (18, 18, 128)
+
+maxpooling2D:
+	- Output shape: (9, 9, 128)
+	- Size: (2, 2)
+
+conv + relu: 
+	- Output shape: (6, 6, 256)
+	- W: (4, 4, 256)
+	- b: (6, 6, 256)
+
+Flatten: 
+	- Output shape: (batch_size, 6*6*256)
+
+FC1 + sigmoid:
+	- Output shape: (batch_size, 4096)
+	- W: (6*6*256, 4096)
+	- b: (4096, )
+
+FC2 + sigmoid: 
+	- Output shape: (batch_size, 1)
+	- W: (4096, 1)
+	- b: (1, )
+
+
+
+
